@@ -1,27 +1,29 @@
+import LessonControlButtons from "./LessonControlButtons";
+import { BsGripVertical } from "react-icons/bs";
+import ModuleControlButtons from "./ModuleControlButtons";
+import ModulesControls from "./ModulesControls";
 export default function Modules() {
   return (
     <div>
-      <button id="wd-collapse-all" style={{ marginRight: "5px" }}>
-        Collapse All
-      </button>
-      <button id="wd-view-progress" style={{ marginRight: "5px" }}>
-        View Progress
-      </button>
-      <select id="wd-select-publish" style={{ marginRight: "5px" }}>
-        <option selected value="PUBLISHALL">
-          Publish All
-        </option>
-        <option value="PUBLISHSOME">Publish Some</option>
-      </select>
-      <button id="wd-add-module">+ Module</button>
-      <ul id="wd-modules">
-        <li className="wd-module">
-          <div className="wd-title">
+      <ModulesControls />
+      <br />
+      <br />
+      <br />
+      <br />
+      <ul id="wd-modules" className="list-group rounded-0">
+        <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-2 bg-secondary">
+            <BsGripVertical className="me-2 fs-3" />
             Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda
+            <ModuleControlButtons />
           </div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
+          <ul className="wd-lessons list-group rounded-0 border-start border-5 border-success">
+            <li className="wd-lesson list-group-item p-3 ps-1">
+              <span className="wd-title">
+                <BsGripVertical className="me-2 fs-3" />
+                LEARNING OBJECTIVES
+                <LessonControlButtons />
+              </span>
               <ul className="wd-content">
                 <li className="wd-content-item">Introduction to the course</li>
                 <li className="wd-content-item">
@@ -29,8 +31,12 @@ export default function Modules() {
                 </li>
               </ul>
             </li>
-            <li className="wd-lesson">
-              <span className="wd-title">READING</span>
+            <li className="wd-lesson list-group-item p-3 ps-1">
+              <span className="wd-title">
+                <BsGripVertical className="me-2 fs-3" />
+                READING
+                <LessonControlButtons />
+              </span>
               <ul className="wd-content">
                 <li className="wd-content-item">
                   Full Stack Developer - Chapter 1
@@ -40,8 +46,12 @@ export default function Modules() {
                 </li>
               </ul>
             </li>
-            <li className="wd-lesson">
-              <span className="wd-title">SLIDES</span>
+            <li className="wd-lesson list-group-item p-3 ps-1">
+              <span className="wd-title">
+                <BsGripVertical className="me-2 fs-3" />
+                SLIDES
+                <LessonControlButtons />
+              </span>
               <ul className="wd-content">
                 <li className="wd-content-item">
                   Introduction to Web Development
@@ -56,13 +66,19 @@ export default function Modules() {
             </li>
           </ul>
         </li>
-        <li className="wd-module">
-          <div className="wd-title">
+        <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-2 bg-secondary">
+            <BsGripVertical className="me-2 fs-3" />
             Week 2 , Lecture 2 - Formatting User Interfaces with HTML
+            <ModuleControlButtons />
           </div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
+          <ul className="wd-lessons list-group rounded-0 border-start border-5 border-success">
+            <li className="wd-lesson list-group-item p-3 ps-1">
+              <span className="wd-title">
+                <BsGripVertical className="me-2 fs-3" />
+                LEARNING OBJECTIVES
+                <LessonControlButtons />
+              </span>
               <ul className="wd-content">
                 <li className="wd-content-item">
                   Learn how to create user interfaces with HTML
@@ -72,8 +88,12 @@ export default function Modules() {
                 </li>
               </ul>
             </li>
-            <li className="wd-lesson">
-              <span className="wd-title">SLIDES</span>
+            <li className="wd-lesson list-group-item p-3 ps-1">
+              <span className="wd-title">
+                <BsGripVertical className="me-2 fs-3" />
+                SLIDES
+                <LessonControlButtons />
+              </span>
               <ul className="wd-content">
                 <li className="wd-content-item">
                   Introduction to HTML and the DOM
