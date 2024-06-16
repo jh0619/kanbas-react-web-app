@@ -1,7 +1,43 @@
 import { FiFilter } from "react-icons/fi";
 import GradesControls from "./GradesControls";
 import { FaPlus, FaSearch } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import {
+  courses,
+  assignments,
+  users,
+  enrollments,
+  grades,
+} from "../../Database";
 export default function Grades() {
+  const { cid } = useParams();
+
+  const courseEnrollments = enrollments.filter(
+    (enrollment) => enrollment.course === cid
+  );
+
+  const courseAssignments = assignments.filter(
+    (assignment) => assignment.course === cid
+  );
+
+  const students = courseEnrollments
+    .map((enrollment) => users.find((user) => user._id === enrollment.user))
+    .filter((student): student is (typeof users)[0] => student !== undefined);
+
+  const studentGrades = students.map((student) => {
+    const studentGrade = {
+      student: `${student.firstName} ${student.lastName}`,
+      grades: courseAssignments.reduce((acc, assignment) => {
+        const grade = grades.find(
+          (g) => g.student === student._id && g.assignment === assignment._id
+        );
+        acc[assignment._id] = grade ? grade.grade : "N/A";
+        return acc;
+      }, {} as { [key: string]: string }),
+    };
+    return studentGrade;
+  });
+
   return (
     <div>
       <GradesControls />
@@ -65,76 +101,25 @@ export default function Grades() {
           <thead>
             <tr>
               <th>Student Name</th>
-              <th>
-                <div>A1 SETUP</div>
-                <div>(Out of 100)</div>
-              </th>
-              <th>
-                <div>A2 HTML</div>
-                <div>(Out of 100)</div>
-              </th>
-              <th>
-                <div>A3 CSS</div>
-                <div>(Out of 100)</div>
-              </th>
-              <th>
-                <div>A4 BOOTSTRAP</div>
-                <div>(Out of 100)</div>
-              </th>
+              {courseAssignments.map((assignment) => (
+                <th key={assignment._id}>
+                  <div>{assignment.title}</div>
+                  <div>(Out of {assignment.points})</div>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="text-danger">Jane Adams</td>
-              <td>100%</td>
-              <td>96.67%</td>
-              <td>92.18%</td>
-              <td>66.22%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">Christina Allen</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">Samreen Ansari</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">Han Bao</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td className="text-center align-middle">
-                <div className="d-flex justify-content-center align-items-center">
-                  <input
-                    type="text"
-                    value="88.03%"
-                    className="form-control text-center"
-                    style={{ width: "100px" }}
-                  />
-                </div>
-              </td>
-              <td>98.99%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">Mahi Sai Srinivas Bobbili</td>
-              <td>100%</td>
-              <td>96.67%</td>
-              <td>98.37%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">Siran Cao</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
+            {studentGrades.map((studentGrade) => (
+              <tr key={studentGrade.student}>
+                <td className="text-danger">{studentGrade.student}</td>
+                {courseAssignments.map((assignment) => (
+                  <td key={assignment._id}>
+                    {studentGrade.grades[assignment._id]}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

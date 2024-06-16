@@ -1,0 +1,79 @@
+[
+  {
+    "_id": "RS101",
+    "name": "React JS",
+    "number": "RS4550",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "This course provides an in-depth study of the React.js",
+    "image": "/images/reactjs.jpg"
+  },
+  {
+    "_id": "RS102",
+    "name": "Python",
+    "number": "RS4560",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D123",
+    "credits": 3,
+    "description": "This course offers a comprehensive exploration of the programming language Python",
+    "image": "/images/python.jpg"
+  },
+  {
+    "_id": "RS103",
+    "name": "Java",
+    "number": "RS4570",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "This course delves into the principles and practices of the programming language Java",
+    "image": "/images/java.jpg"
+  },
+  {
+    "_id": "RS104",
+    "name": "C/C++",
+    "number": "CH1230",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D134",
+    "credits": 3,
+    "description": "An in-depth course that explores C and C++",
+    "image": "/images/c.jpg"
+  },
+  {
+    "_id": "RS105",
+    "name": "Go",
+    "number": "CH1240",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D134",
+    "credits": 3,
+    "description": "An in-depth course that explores the programming language Go",
+    "image": "/images/go.jpg"
+  },
+  {
+    "_id": "RS106",
+    "name": "php",
+    "number": "CH1250",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D134",
+    "credits": 3,
+    "description": "An in-depth course that explores the programming language php",
+    "image": "/images/php.jpg"
+  },
+  {
+    "_id": "RS107",
+    "name": "Swift",
+    "number": "ME101",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D134",
+    "credits": 3,
+    "description": "An in-depth course that explores the programming language Swift",
+    "image": "/images/swift.jpg"
+  }
+]

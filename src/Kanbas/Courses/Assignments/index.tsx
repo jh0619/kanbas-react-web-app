@@ -1,3 +1,5 @@
+import * as db from "../../Database";
+import { useParams } from "react-router-dom";
 import { GoTriangleDown } from "react-icons/go";
 import { FaPlus } from "react-icons/fa6";
 import { IoEllipsisVertical } from "react-icons/io5";
@@ -5,7 +7,13 @@ import { GiNotebook } from "react-icons/gi";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import AssignmentsControls from "./AssignmentsControls";
 import { BsGripVertical } from "react-icons/bs";
+
 export default function Assignments() {
+  const assignments = db.assignments;
+  const { cid } = useParams();
+  const courseAssignments = assignments.filter(
+    (assignment) => assignment.course === cid
+  );
   return (
     <div id="wd-assignments">
       <AssignmentsControls />
@@ -29,66 +37,33 @@ export default function Assignments() {
             </div>
           </div>
           <ul className="wd-assignments list-group rounded-0 border-start border-5 border-success">
-            <li className="wd-assignment d-flex align-items-center list-group-item p-3 ps-1">
-              <BsGripVertical className="me-2 fs-2" />
-              <GiNotebook className="me-4 text-success fs-2" />
-              <span>
-                <a
-                  className="wd-assignment-link text-dark text-decoration-none"
-                  href="#/Kanbas/Courses/1234/Assignments/123"
-                >
-                  <strong>A1</strong>
-                </a>
-                <div>
-                  <span className="text-danger">Multiple Modules </span> |
-                  <strong> Not available until</strong> May 6 at 12:00am |
-                </div>
-                <div>
-                  <strong>Due</strong> May 13 at 11:59pm | 100 pts
-                </div>
-              </span>
-              <AssignmentControlButtons />
-            </li>
-            <li className="wd-assignment d-flex align-items-center list-group-item p-3 ps-1">
-              <BsGripVertical className="me-2 fs-2" />
-              <GiNotebook className="me-4 text-success fs-2" />
-              <span>
-                <a
-                  className="wd-assignment-link text-dark text-decoration-none"
-                  href="#/Kanbas/Courses/1234/Assignments/124"
-                >
-                  <strong>A2</strong>
-                </a>
-                <div>
-                  <span className="text-danger">Multiple Modules </span> |
-                  <strong> Not available until</strong> May 13 at 12:00am |
-                </div>
-                <div>
-                  <strong>Due</strong> May 20 at 11:59pm | 100 pts
-                </div>
-              </span>
-              <AssignmentControlButtons />
-            </li>
-            <li className="wd-assignment d-flex align-items-center list-group-item p-3 ps-1">
-              <BsGripVertical className="me-2 fs-2" />
-              <GiNotebook className="me-4 text-success fs-2" />
-              <span>
-                <a
-                  className="wd-assignment-link text-dark text-decoration-none"
-                  href="#/Kanbas/Courses/1234/Assignments/125"
-                >
-                  <strong>A3</strong>
-                </a>
-                <div>
-                  <span className="text-danger">Multiple Modules </span> |
-                  <strong> Not available until</strong> May 20 at 12:00am |
-                </div>
-                <div>
-                  <strong>Due</strong> May 27 at 11:59pm | 100 pts
-                </div>
-              </span>
-              <AssignmentControlButtons />
-            </li>
+            {courseAssignments.map((assignment) => (
+              <li
+                key={assignment._id}
+                className="wd-assignment d-flex align-items-center list-group-item p-3 ps-1"
+              >
+                <BsGripVertical className="me-2 fs-2" />
+                <GiNotebook className="me-4 text-success fs-2" />
+                <span>
+                  <a
+                    className="wd-assignment-link text-dark text-decoration-none"
+                    href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+                  >
+                    <strong>{assignment.title}</strong>
+                  </a>
+                  <div>
+                    <span className="text-danger">Multiple Modules </span> |
+                    <strong> Not available until</strong>{" "}
+                    {assignment.availability} |
+                  </div>
+                  <div>
+                    <strong>Due</strong> {assignment.due} | {assignment.points}{" "}
+                    pts
+                  </div>
+                </span>
+                <AssignmentControlButtons />
+              </li>
+            ))}
           </ul>
         </li>
       </ul>
