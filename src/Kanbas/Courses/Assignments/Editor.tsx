@@ -1,18 +1,52 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useLocation, useParams } from "react-router";
-import { assignments } from "../../Database";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router";
+import { addAssignment, updateAssignment } from "./reducer";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AssignmentEditor() {
   const { cid } = useParams();
   const { pathname } = useLocation();
   const aid = pathname.split("/").pop();
-  const assignment = assignments.find((a) => a._id === aid);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { assignments } = useSelector((state: any) => state.assignments);
 
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
+  const [assignment, setAssignment] = useState({
+    title: "",
+    description: "",
+    points: "",
+    course: cid,
+    "availability-dt": "",
+    "availability-until": "",
+    "due-dt": "",
+  });
 
+  useEffect(() => {
+    if (aid) {
+      const existingAssignment = assignments.find((a: any) => a._id === aid);
+      if (existingAssignment) {
+        setAssignment(existingAssignment);
+      }
+    }
+  }, [aid, assignments]);
+
+  const handleChange = (e: any) => {
+    const { id, value } = e.target;
+    setAssignment((prevAssignment) => ({
+      ...prevAssignment,
+      [id]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    if (aid && aid !== "New") {
+      dispatch(updateAssignment(assignment));
+    } else {
+      dispatch(addAssignment(assignment));
+    }
+    navigate(`/Kanbas/Courses/${cid}/Assignments`);
+  };
   return (
     <div id="wd-assignments-editor" className="container p-4">
       <div className="mb-4">
@@ -20,19 +54,23 @@ export default function AssignmentEditor() {
           <strong>Assignment Name</strong>
         </label>
         <input
-          id="wd-name"
+          id="title"
           value={assignment.title}
           className="form-control"
-          readOnly
+          onChange={handleChange}
         />
       </div>
       <div className="mb-4">
         <label htmlFor="wd-description" className="form-label">
           <strong>Description</strong>
         </label>
-        <textarea id="wd-description" rows={10} className="form-control">
-          {assignment.description}
-        </textarea>
+        <textarea
+          id="description"
+          rows={10}
+          value={assignment.description}
+          onChange={handleChange}
+          className="form-control"
+        />
       </div>
       <div className="row mb-2">
         <div className="col-md-6 d-flex justify-content-end">
@@ -42,8 +80,9 @@ export default function AssignmentEditor() {
         </div>
         <div className="col-md-6">
           <input
-            id="wd-points"
+            id="points"
             value={assignment.points}
+            onChange={handleChange}
             className="form-control"
           />
         </div>
@@ -179,7 +218,8 @@ export default function AssignmentEditor() {
           <input
             type="datetime-local"
             value={assignment["due-dt"]}
-            id="wd-due-date"
+            id="due-dt"
+            onChange={handleChange}
             className="form-control mb-2"
           />
           <div className="row mb-2">
@@ -197,14 +237,17 @@ export default function AssignmentEditor() {
               <input
                 type="datetime-local"
                 value={assignment["availability-dt"]}
-                id="wd-available-from"
+                id="availability-dt"
+                onChange={handleChange}
                 className="form-control mb-2"
               />
             </div>
             <div className="col-md-6">
               <input
                 type="datetime-local"
-                id="wd-available-until"
+                id="availability-until"
+                value={assignment["availability-until"]}
+                onChange={handleChange}
                 className="form-control"
               />
             </div>
@@ -213,18 +256,15 @@ export default function AssignmentEditor() {
       </div>
       <hr />
       <div className="text-end">
-        <Link
-          to={`/Kanbas/Courses/${cid}/Assignments`}
+        <button
+          onClick={() => navigate(`/Kanbas/Courses/${cid}/Assignments`)}
           className="btn btn-secondary me-2"
         >
           Cancel
-        </Link>
-        <Link
-          to={`/Kanbas/Courses/${cid}/Assignments`}
-          className="btn btn-danger"
-        >
+        </button>
+        <button onClick={handleSave} className="btn btn-danger">
           Save
-        </Link>
+        </button>
       </div>
     </div>
   );
