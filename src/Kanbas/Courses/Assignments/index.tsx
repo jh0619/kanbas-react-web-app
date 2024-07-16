@@ -8,22 +8,51 @@ import { GiNotebook } from "react-icons/gi";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import AssignmentsControls from "./AssignmentsControls";
 import { BsGripVertical } from "react-icons/bs";
-import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import {
+  setAssignments,
+  addAssignment,
+  updateAssignment,
+  deleteAssignment,
+} from "./reducer";
+import React, { useEffect } from "react";
+import * as client from "./client";
 
 export default function Assignments() {
   const navigate = useNavigate();
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignments);
   const dispatch = useDispatch();
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+
+  const removeAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+
+  const saveAssignment = async (assignment: any) => {
+    const status = await client.updateAssignment(assignment);
+    dispatch(updateAssignment(assignment));
+  };
+
+  const createAssignment = async (assignment: any) => {
+    const newAssignment = await client.createAssignment(
+      cid as string,
+      assignment
+    );
+    dispatch(addAssignment(newAssignment));
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
+
   const courseAssignments = assignments.filter(
     (assignment: any) => assignment.course === cid
   );
-
-  const handleDelete = (assignmentId: string) => {
-    if (window.confirm("Are you sure you want to delete this assignment?")) {
-      dispatch(deleteAssignment(assignmentId));
-    }
-  };
 
   return (
     <div id="wd-assignments">
@@ -79,13 +108,13 @@ export default function Assignments() {
                 </span>
                 <AssignmentControlButtons
                   assignmentId={assignment._id}
-                  deleteAssignment={(assignmentId) => {
+                  deleteAssignment={() => {
                     if (
                       window.confirm(
                         "Are you sure you want to delete this assignment?"
                       )
                     ) {
-                      dispatch(deleteAssignment(assignmentId));
+                      removeAssignment(assignment._id);
                     }
                   }}
                 />

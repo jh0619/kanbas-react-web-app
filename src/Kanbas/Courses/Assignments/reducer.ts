@@ -1,9 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { assignments as dbAssignments } from "../../Database";
-
-const initialState = {
-  assignments: dbAssignments,
-};
 
 //Function to format date
 const formatDate = (dateString: string): string => {
@@ -20,10 +15,17 @@ const formatDate = (dateString: string): string => {
     .replace(",", "");
 };
 
+const initialState = {
+  assignments: [],
+};
+
 const assignmentsSlice = createSlice({
   name: "assignments",
   initialState,
   reducers: {
+    setAssignments: (state, action) => {
+      state.assignments = action.payload;
+    },
     addAssignment: (state, { payload: assignment }) => {
       const newAssignment = {
         _id: new Date().getTime().toString(),
@@ -41,11 +43,11 @@ const assignmentsSlice = createSlice({
     },
     deleteAssignment: (state, { payload: assignmentId }) => {
       state.assignments = state.assignments.filter(
-        (a) => a._id !== assignmentId
+        (a: any) => a._id !== assignmentId
       );
     },
     updateAssignment: (state, { payload: updatedAssignment }) => {
-      state.assignments = state.assignments.map((a) =>
+      state.assignments = state.assignments.map((a: any) =>
         a._id === updatedAssignment._id
           ? {
               ...updatedAssignment,
@@ -53,11 +55,15 @@ const assignmentsSlice = createSlice({
               due: formatDate(updatedAssignment["due-dt"]),
             }
           : a
-      );
+      ) as any;
     },
   },
 });
 
-export const { addAssignment, deleteAssignment, updateAssignment } =
-  assignmentsSlice.actions;
+export const {
+  setAssignments,
+  addAssignment,
+  deleteAssignment,
+  updateAssignment,
+} = assignmentsSlice.actions;
 export default assignmentsSlice.reducer;
