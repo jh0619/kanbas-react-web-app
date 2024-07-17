@@ -78,7 +78,11 @@ export default function TOC() {
         </a>
       </li>
       <li className="nav-item">
-        <a id="root-server" className="nav-link">
+        <a
+          id="root-server"
+          href="https://kanbas-node-server-app-pjpf.onrender.com"
+          className="nav-link"
+        >
           Root of the Server
         </a>
       </li>
