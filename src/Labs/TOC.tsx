@@ -68,6 +68,20 @@ export default function TOC() {
           My GitHub Repository
         </a>
       </li>
+      <li className="nav-item">
+        <a
+          id="wd-github-server"
+          href="https://github.com/jh0619/kanbas-node-server-app.git"
+          className="nav-link"
+        >
+          My GitHub Repository for Server
+        </a>
+      </li>
+      <li className="nav-item">
+        <a id="root-server" className="nav-link">
+          Root of the Server
+        </a>
+      </li>
     </ul>
   );
 }
