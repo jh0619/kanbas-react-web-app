@@ -18,9 +18,9 @@ export default function AssignmentEditor() {
     description: "",
     points: "",
     course: cid,
-    "availability-dt": "",
-    "availability-until": "",
-    "due-dt": "",
+    availabilityDt: "",
+    availabilityUntil: "",
+    dueDt: "",
   });
 
   useEffect(() => {
@@ -223,7 +223,7 @@ export default function AssignmentEditor() {
           </label>
           <input
             type="datetime-local"
-            value={assignment["due-dt"]}
+            value={assignment["dueDt"]}
             id="due-dt"
             onChange={handleChange}
             className="form-control mb-2"
@@ -242,7 +242,7 @@ export default function AssignmentEditor() {
             <div className="col-md-6">
               <input
                 type="datetime-local"
-                value={assignment["availability-dt"]}
+                value={assignment["availabilityDt"]}
                 id="availability-dt"
                 onChange={handleChange}
                 className="form-control mb-2"
@@ -252,7 +252,7 @@ export default function AssignmentEditor() {
               <input
                 type="datetime-local"
                 id="availability-until"
-                value={assignment["availability-until"]}
+                value={assignment["availabilityUntil"]}
                 onChange={handleChange}
                 className="form-control"
               />
