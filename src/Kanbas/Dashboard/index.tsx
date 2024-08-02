@@ -58,7 +58,7 @@ export default function Dashboard({
                 className="text-decoration-none"
               >
                 <div className="card rounded-3 overflow-hidden">
-                  <img src={course.image} alt={course.name} height="{160}" />
+                  <img src="/images/1.jpg" alt={course.name} height="{160}" />
                   <div className="card-body">
                     <span
                       className="wd-dashboard-course-link"

@@ -6,6 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import * as client from "./client";
 
 export default function AssignmentEditor() {
+  const formatDate = (dateString: string): string => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return new Date(dateString)
+      .toLocaleDateString("en-US", options)
+      .replace(",", "");
+  };
+
   const { cid } = useParams();
   const { pathname } = useLocation();
   const aid = pathname.split("/").pop();
@@ -41,13 +55,30 @@ export default function AssignmentEditor() {
   };
 
   const handleSave = async () => {
+    //if (aid && aid !== "New") {
+    //  await client.updateAssignment(assignment);
+    //  dispatch(updateAssignment(assignment));
+    //} else {
+    //  const newAssignment = await client.createAssignment(
+    //    cid as string,
+    //    assignment
+    //  );
+    //  dispatch(addAssignment(newAssignment));
+    //}
+    //navigate(`/Kanbas/Courses/${cid}/Assignments`);
+    const formattedAssignment = {
+      ...assignment,
+      availability: formatDate(assignment.availabilityDt),
+      due: formatDate(assignment.dueDt),
+    };
+
     if (aid && aid !== "New") {
-      await client.updateAssignment(assignment);
-      dispatch(updateAssignment(assignment));
+      await client.updateAssignment(formattedAssignment);
+      dispatch(updateAssignment(formattedAssignment));
     } else {
       const newAssignment = await client.createAssignment(
         cid as string,
-        assignment
+        formattedAssignment
       );
       dispatch(addAssignment(newAssignment));
     }
@@ -223,8 +254,8 @@ export default function AssignmentEditor() {
           </label>
           <input
             type="datetime-local"
-            value={assignment["dueDt"]}
-            id="due-dt"
+            value={assignment.dueDt}
+            id="dueDt"
             onChange={handleChange}
             className="form-control mb-2"
           />
@@ -242,8 +273,8 @@ export default function AssignmentEditor() {
             <div className="col-md-6">
               <input
                 type="datetime-local"
-                value={assignment["availabilityDt"]}
-                id="availability-dt"
+                value={assignment.availabilityDt}
+                id="availabilityDt"
                 onChange={handleChange}
                 className="form-control mb-2"
               />
@@ -251,8 +282,8 @@ export default function AssignmentEditor() {
             <div className="col-md-6">
               <input
                 type="datetime-local"
-                id="availability-until"
-                value={assignment["availabilityUntil"]}
+                id="availabilityUntil"
+                value={assignment.availabilityUntil}
                 onChange={handleChange}
                 className="form-control"
               />
