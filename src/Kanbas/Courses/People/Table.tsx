@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import * as client from "./client";
+import * as enrollmentClient from "../Enrollments/client";
 import PeopleDetails from "./Details";
 import { Link, useParams } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 export default function PeopleTable() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { cid } = useParams();
   const [users, setUsers] = useState<any[]>([]);
   const fetchUsers = async () => {
-    const users = await client.findAllUsers();
-    setUsers(users);
+    if (cid) {
+      const users = await enrollmentClient.findUsersByCourse(cid);
+      setUsers(users);
+    } else {
+      const users = await client.findAllUsers();
+      setUsers(users);
+    }
   };
-
   const [role, setRole] = useState("");
   const filterUsersByRole = async (role: string) => {
     setRole(role);
@@ -49,13 +56,18 @@ export default function PeopleTable() {
   }, []);
   return (
     <div id="wd-people-table">
-      <button
-        onClick={createUser}
-        className="float-end btn btn-danger wd-add-people"
-      >
-        <FaPlus className="me-2" />
-        People
-      </button>
+      {currentUser.role == "FACULTY" && (
+        <>
+          <button
+            onClick={createUser}
+            className="float-end btn btn-danger wd-add-people"
+          >
+            <FaPlus className="me-2" />
+            People
+          </button>
+        </>
+      )}
+
       <PeopleDetails fetchUsers={fetchUsers} />
       <input
         onChange={(e) => filterUsersByName(e.target.value)}

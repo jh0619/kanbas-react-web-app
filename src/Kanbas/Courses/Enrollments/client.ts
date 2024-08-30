@@ -27,3 +27,8 @@ export const fetchStudentsByCourse = async (courseId: string) => {
   const response = await axios.get(`${ENROLLMENTS_API}/course/${courseId}`);
   return response.data;
 };
+
+export const findUsersByCourse = async (courseId: string) => {
+  const response = await axios.get(`${ENROLLMENTS_API}/course/${courseId}`);
+  return response.data;
+};
