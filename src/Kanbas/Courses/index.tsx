@@ -7,6 +7,12 @@ import AssignmentEditor from "./Assignments/Editor";
 import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import Grades from "./Grades";
 import PeopleTable from "./People/Table";
+import Quizzes from "./Quizzes";
+import DetailsEditor from "./Quizzes/DetailsEditor";
+import QuestionEditor from "./Quizzes/QuestionEditor";
+import QuizDetail from "./Quizzes/QuizDetail";
+import TakeQuiz from "./Quizzes/QuizTake";
+import PreviewResult from "./Quizzes/PreviewResult";
 export default function Courses({ courses }: { courses: any[] }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
@@ -32,6 +38,18 @@ export default function Courses({ courses }: { courses: any[] }) {
             <Route path="Assignments/:id" element={<AssignmentEditor />} />
             <Route path="People" element={<PeopleTable />} />
             <Route path="People/:uid" element={<PeopleTable />} />
+            <Route path="Quizzes" element={<Quizzes />} />
+            <Route path="Quizzes/:qid" element={<DetailsEditor />} />
+            <Route
+              path="Quizzes/:qid/questions/:questionId"
+              element={<QuestionEditor />}
+            />
+            <Route path="Quizzes/:qid/details" element={<QuizDetail />} />
+            <Route path="Quizzes/:qid/Start" element={<TakeQuiz />} />
+            <Route
+              path="Quizzes/:qid/preview/results"
+              element={<PreviewResult />}
+            />
           </Routes>
         </div>
       </div>
