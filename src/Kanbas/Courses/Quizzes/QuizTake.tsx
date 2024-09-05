@@ -9,13 +9,14 @@ export default function TakeQuiz() {
   const dispatch = useDispatch();
   //const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<any[]>([]);
-  //const [timeRemaining, setTimeRemaining] = useState(0);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const quiz = useSelector((state: any) =>
     state.quizzes.quizzes.find((q: any) => q._id === qid)
   );
   const navigate = useNavigate();
-
+  const [timeRemaining, setTimeRemaining] = useState<number>(
+    quiz ? quiz.timeLimit * 60 : 0
+  );
   // useEffect(() => {
   //   if (!quiz && qid) {
   //     const fetchQuiz = async () => {
@@ -58,7 +59,28 @@ export default function TakeQuiz() {
 
       fetchQuiz();
     }
+    if (quiz) {
+      setTimeRemaining(quiz.timeLimit * 60); // Set the time limit in seconds
+    }
   }, [qid, quiz, dispatch]);
+
+  useEffect(() => {
+    if (timeRemaining <= 0) {
+      handleSubmitQuiz(); // Automatically submit the quiz when time is up.
+      return;
+    }
+    const intervalId = setInterval(() => {
+      setTimeRemaining((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timeRemaining]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   const handleAnswerChange = (
     questionId: number,
@@ -146,7 +168,7 @@ export default function TakeQuiz() {
           This is a preview of the published version of the quiz
         </p>
       )}
-      <p>Time limit: {quiz.timeLimit} minutes</p>
+      <p>Time remaining: {formatTime(timeRemaining)}</p>
 
       <div className="p-4">
         {quiz.questions.map((question: any, index: number) => (

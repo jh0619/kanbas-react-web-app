@@ -2,13 +2,7 @@ import { FiFilter } from "react-icons/fi";
 import GradesControls from "./GradesControls";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import {
-  courses,
-  assignments,
-  users,
-  enrollments,
-  grades,
-} from "../../Database";
+/*
 export default function Grades() {
   const { cid } = useParams();
 
@@ -40,9 +34,6 @@ export default function Grades() {
 
   return (
     <div>
-      <GradesControls />
-      <br />
-      <br />
       <br />
       <div className="row mb-2">
         <div className="col-md-6">
@@ -82,19 +73,6 @@ export default function Grades() {
           </div>
         </div>
       </div>
-      <button
-        id="wd-apply-filters"
-        className="btn btn-lg btn-secondary d-inline me-1 float-start"
-        type="button"
-      >
-        <FiFilter
-          className="position-relative me-2"
-          style={{ bottom: "1px" }}
-        />
-        Apply Filters
-      </button>
-      <br />
-      <br />
       <br />
       <div className="table-responsive ">
         <table className="table table-striped text-center table-bordered">
@@ -126,3 +104,4 @@ export default function Grades() {
     </div>
   );
 }
+*/
