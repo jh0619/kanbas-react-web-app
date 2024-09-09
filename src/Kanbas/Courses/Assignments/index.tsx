@@ -22,7 +22,7 @@ export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignments);
   const dispatch = useDispatch();
-
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const fetchAssignments = async () => {
     const assignments = await client.findAssignmentsForCourse(cid as string);
     dispatch(setAssignments(assignments));
@@ -56,11 +56,14 @@ export default function Assignments() {
 
   return (
     <div id="wd-assignments">
-      <AssignmentsControls />
-      <br />
-      <br />
-      <br />
-      <br />
+      {currentUser.role === "FACULTY" && (
+        <>
+          <AssignmentsControls />
+          <br />
+          <br />
+          <br />
+        </>
+      )}
 
       <ul id="wd-assignment-list" className="list-group rounded-0">
         <li className="wd-assignment-list-item list-group-item p-0 mb-5 fs-5 border-gray">
@@ -72,12 +75,6 @@ export default function Assignments() {
               <span className="badge bg-light text-dark me-2">
                 40% of Total
               </span>
-              <FaPlus
-                className="me-2"
-                onClick={() =>
-                  navigate(`/Kanbas/Courses/${cid}/Assignments/New`)
-                }
-              />
               <IoEllipsisVertical className="fs-4" />
             </div>
           </div>
@@ -88,14 +85,22 @@ export default function Assignments() {
                 className="wd-assignment d-flex align-items-center list-group-item p-3 ps-1"
               >
                 <BsGripVertical className="me-2 fs-2" />
-                <GiNotebook className="me-4 text-success fs-2" />
+                {currentUser.role === "FACULTY" && (
+                  <>
+                    <GiNotebook
+                      className="me-2 fs-3 text-success"
+                      onClick={() => {
+                        navigate(
+                          `/Kanbas/Courses/${cid}/Assignments/${assignment._id}`
+                        );
+                      }}
+                    />
+                  </>
+                )}
                 <span>
-                  <Link
-                    className="wd-assignment-link text-dark text-decoration-none"
-                    to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
-                  >
+                  <div className="text-dark text-decoration-none">
                     <strong>{assignment.title}</strong>
-                  </Link>
+                  </div>
                   <div>
                     <span className="text-danger">Multiple Modules </span> |
                     <strong> Not available until</strong>{" "}
@@ -106,18 +111,22 @@ export default function Assignments() {
                     pts
                   </div>
                 </span>
-                <AssignmentControlButtons
-                  assignmentId={assignment._id}
-                  deleteAssignment={() => {
-                    if (
-                      window.confirm(
-                        "Are you sure you want to delete this assignment?"
-                      )
-                    ) {
-                      removeAssignment(assignment._id);
-                    }
-                  }}
-                />
+                {currentUser.role === "FACULTY" && (
+                  <>
+                    <AssignmentControlButtons
+                      assignmentId={assignment._id}
+                      deleteAssignment={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete this assignment?"
+                          )
+                        ) {
+                          removeAssignment(assignment._id);
+                        }
+                      }}
+                    />
+                  </>
+                )}
               </li>
             ))}
           </ul>
